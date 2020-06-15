@@ -477,24 +477,18 @@ static struct {
         btnMouseLeftP.alpha = 0;
         btnMouseRightP.alpha = 0;
 		btnShowCommands.alpha = 0;
-        if (useOriginalScreenSize)
-        {
-            float maxWidth = 640;
-            float maxHeight = 480;
-            float sx = maxWidth/sw;
-            float sy = maxHeight/sh;
-            float scale = MIN(sx,sy);
-            screenView.transform = CGAffineTransformMakeScale(scale,scale*additionalScaleY);
-            screenView.center = CGPointMake(self.view.bounds.size.width/2, maxHeight/2);
-        }
-        else
-        {
-            float sx = self.view.bounds.size.width/sw;
-            float sy = self.view.bounds.size.height/sh;
-            float scale = MIN(sx,sy);
-            screenView.transform = CGAffineTransformMakeScale(scale,scale*additionalScaleY);
-            screenView.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2);
-        }
+        
+        float viewWidth = self.view.bounds.size.width;
+        float viewHeight = self.view.bounds.size.height;
+        
+        // We're in fullscreen/landscape mode, so constrain to device screen height
+        float maxWidth = useOriginalScreenSize ? 640 : viewHeight / 0.75;
+        float maxHeight = useOriginalScreenSize ? 480 : viewHeight;
+        
+        float scale = maxWidth / sw;
+        screenView.transform = CGAffineTransformMakeScale(scale, scale * additionalScaleY);
+        screenView.center = CGPointMake(viewWidth / 2, maxHeight / 2);
+        
         if (fullscreenPanel.superview != self.view)
         {
             fullscreenPanel.center = CGPointMake(self.view.frame.size.width/2, fullscreenPanel.frame.size.height/2);
