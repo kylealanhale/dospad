@@ -30,6 +30,8 @@
 	<string>1.98b</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>UIFileSharingEnabled</key>
@@ -55,5 +57,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>UISupportsDocumentBrowser</key>
+    <true/>
 </dict>
 </plist>
