@@ -123,6 +123,10 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
     holdIndicator.transform = CGAffineTransformMakeScale(1.5, 1.5);
     [self.view addSubview:holdIndicator];
 
+    if (@available(iOS 11.0, *)) {
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
+    
 #ifdef IDOS
     self.title = @"iDOS";
 #else
@@ -220,6 +224,11 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 - (NSUInteger)supportedInterfaceOrientations
 {
 	return UIInterfaceOrientationMaskAll;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
+    return YES;
 }
 
 - (void)dealloc {
