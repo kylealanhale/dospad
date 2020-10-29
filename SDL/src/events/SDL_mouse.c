@@ -395,6 +395,7 @@ SDL_SendMouseMotion(int id, int relative, int x, int y, int pressure)
     int x_max = 0, y_max = 0;
 
     if (!mouse || mouse->flush_motion) {
+        printf(">>> No mouse!\n");
         return 0;
     }
 

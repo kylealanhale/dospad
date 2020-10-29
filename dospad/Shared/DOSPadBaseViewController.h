@@ -37,8 +37,14 @@ typedef enum {
     InputSource_TotalCount
 } InputSourceType;
 
+#ifdef __IPHONE_13_4
+API_AVAILABLE(ios(13.4))
+@interface DOSPadBaseViewController : UIViewController
+<SDL_uikitopenglview_delegate,MouseHoldDelegate,KeyDelegate,UIAlertViewDelegate,UIPointerInteractionDelegate>
+#else
 @interface DOSPadBaseViewController : UIViewController
 <SDL_uikitopenglview_delegate,MouseHoldDelegate,KeyDelegate,UIAlertViewDelegate>
+#endif
 {
     NSString *configPath;
     BOOL autoExit;

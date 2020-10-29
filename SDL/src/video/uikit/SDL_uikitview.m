@@ -151,6 +151,8 @@ void SDL_init_keyboard()
 #endif
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+NSLog(@">>> touchesBegan");
+
 #ifdef IPHONEOS
     if (SDL_GetNumMice() == 0) {
         int i;
@@ -235,7 +237,9 @@ void SDL_init_keyboard()
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	NSEnumerator *enumerator = [touches objectEnumerator];
 	UITouch *touch=nil;
-	
+    
+    NSLog(@">>> touchesEnded");
+    
 	while(touch = (UITouch *)[enumerator nextObject]) {
 		/* search for the mouse slot associated with this touch */
 		int i, found = NO;
@@ -342,6 +346,7 @@ void SDL_init_keyboard()
                     extmice[i].mouseHold=MOUSE_HOLD_NO;
                 }
                 if (extmice[i].mouseHold==MOUSE_HOLD_NO) {
+                    NSLog(@">>> touchesMoved: new location: %f, %f", dx*scale, dy*scale);
                     SDL_SendMouseMotion(i, 1, dx*scale, dy*scale, 0);
                 }
 #else

@@ -41,6 +41,33 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 @synthesize configPath;
 @synthesize screenView;
 
+#ifdef __IPHONE_13_4
+    UIPointerInteraction *interaction;
+#endif
+
+#ifdef __IPHONE_13_4
+- (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion  API_AVAILABLE(ios(13.4)){
+    
+    if (request != nil) {
+        CGPoint origin = self.screenView.bounds.origin;
+        CGPoint point = request.location;
+
+        point.x -= origin.x;
+        point.y -= origin.y;
+        
+        UIView *tappedView = [self.view hitTest:point withEvent:nil];
+        //[[tappedView superview] setBackgroundColor:[UIColor redColor]];
+        
+        NSLog(@">>> pointerInteraction: %f, %f", point.x, point.y);
+        SDL_SendMouseMotion(0, 0, (int)point.x, (int)point.y, 0);
+    }
+    return [UIPointerRegion regionWithRect:self.screenView.bounds identifier:nil];
+}
+//- (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region {
+//    return [UIPointerStyle hiddenPointerStyle];
+//}
+#endif
+
 - (bool)isInputSourceEnabled:(InputSourceType)type
 {
 	switch (type) {
@@ -125,6 +152,11 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 
     if (@available(iOS 11.0, *)) {
         [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
+    
+    if (@available(iOS 13.4, *)) {
+        interaction = [[UIPointerInteraction alloc] initWithDelegate: self];
+        [self.view addInteraction:interaction];
     }
     
 #ifdef IDOS
